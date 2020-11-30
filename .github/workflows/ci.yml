@@ -20,11 +20,12 @@ jobs:
       - run: npm run build --if-present
       - name: Deploy to Server
         uses: cross-the-world/ssh-scp-ssh-pipelines@v1.1.2
-        host: 47.102.129.14
-        user: root
-        pass: lkl123456!
-        first_ssh: |
-          rm -fr /deploy
-          mkdir -p /deploy
-        scp: ./build/* => /deploy/
-        last_ssh: ls -l /deploy
+        with:
+          host: 47.102.129.14
+          user: root
+          pass: lkl123456!
+          first_ssh: |
+            rm -fr /deploy
+            mkdir -p /deploy
+          scp: ./build/* => /deploy/
+          last_ssh: ls -l /deploy
