@@ -30,4 +30,4 @@ jobs:
           scp: ./build/* => /deploy/
           last_ssh:
             ls -l /deploy
-            nginx -s reload
+            /usr/sbin/nginx -s reload
