@@ -21,11 +21,13 @@ jobs:
       - name: Deploy to Server
         uses: cross-the-world/ssh-scp-ssh-pipelines@v1.1.2
         with:
-          host: 47.102.129.14
-          user: root
-          pass: lkl123456!
+          host: ${{ secrets.SSH_HOST }}
+          user: ${{ secrets.SSH_USER }}
+          pass: ${{ secrets.SSH_PASS }}
           first_ssh: |
             rm -fr /deploy
             mkdir -p /deploy
           scp: ./build/* => /deploy/
-          last_ssh: ls -l /deploy
+          last_ssh:
+            ls -l /deploy
+            nginx -s reload
