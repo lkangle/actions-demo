@@ -1,4 +1,4 @@
-name: auto deploy to github page
+name: auto deploy to ssh
 
 on:
   push:
@@ -6,16 +6,25 @@ on:
 
 jobs:
   build-to-deploy:
-    name: build and deploy to github page
+    name: build and deploy to server
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@master
-
-      - name: Build and Deploy
-        uses: JamesIves/github-pages-deploy-action@master
-        env:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: build
-          BUILD_SCRIPT: npm install && npm run build
+      - uses: actions/checkout@v2
+      - name: Install NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: 10
+      - run: npm install
+      - run: rm -fr ./build
+      - run: npm run build --if-present
+      - name: Deploy to Server
+        uses: cross-the-world/ssh-scp-ssh-pipelines@v1.1.2
+        host: 47.102.129.14
+        user: root
+        pass: lkl123456!
+        first_ssh: |
+          rm -fr /deploy
+          mkdir -p /deploy
+        scp: ./build/* => /deploy/
+        last_ssh: ls -l /deploy
