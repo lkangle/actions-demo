@@ -16,7 +16,6 @@ jobs:
         with:
           node-version: 10
       - run: npm install
-      - run: rm -fr ./build
       - run: npm run build --if-present
       - name: Deploy to Server
         uses: cross-the-world/ssh-scp-ssh-pipelines@v1.1.2
@@ -28,6 +27,6 @@ jobs:
             rm -fr /deploy
             mkdir -p /deploy
           scp: ./build/* => /deploy/
-          last_ssh:
+          last_ssh: |
             ls -l /deploy
             /usr/sbin/nginx -s reload
