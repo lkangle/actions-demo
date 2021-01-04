@@ -6,6 +6,9 @@ function App() {
       <h2>
         React Github Actions Test
       </h2>
+      <p>
+        学习PR流程
+      </p>
     </div>
   );
 }
